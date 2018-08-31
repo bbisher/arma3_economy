@@ -6,7 +6,7 @@ if(_object_classname isKindOf "Man") then {
 } else {
     _created_object = _object_classname createVehicle _spawn_location;
     if(_crewed) then {
-        _created_object createVehicleCrew ;
+        createVehicleCrew _created_object;
     };
 };
 
