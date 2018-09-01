@@ -1,15 +1,18 @@
-params["_resources", "_costs", ]
+params["_resources", "_costs"];
 private _resource = 0;
 private _cost = 0;
 private _purchased = false;
+private _all_keys = _resources call KK_fnc_assocArrayAllKeys;
 
-if([_team_resources, _costs] call econ_is_affordable) then{
+if([_resources, _costs] call econ_is_affordable) then{
     {
-        _resource = [_resources, _x] call econ_get_resource;
-        _cost = [_costs, _x] call econ_get_resource;
-        [_team_resources, _x, _cost] call econ_spend_resource]
+		if([_costs, _x] call KK_fnc_assocArrayKeyExists) then {
+			_resource = [_resources, _x] call econ_get_resource;
+	        _cost = [_costs, _x] call econ_get_resource;
+	        [_resources, _x, _cost] call econ_spend_resource;
+		};
 
-    } forEach _resources call KK_fnc_assocArrayAllKeys;
+    } forEach _all_keys;
     _purchased = true;
 } else {
     _purchased = false;

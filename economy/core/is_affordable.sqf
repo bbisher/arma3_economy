@@ -4,19 +4,24 @@ _costs = _this select 1;
 private _purchaseable = false;
 private _resource = 0;
 private _cost = 0;
+private _all_keys = _resources call KK_fnc_assocArrayAllKeys;
 
 {
-    _resource = [_resources, _x] call econ_get_resource;
-    _cost = [_object_costs, _x] call econ_get_resource;
+	if([_costs, _x] call KK_fnc_assocArrayKeyExists) then {
+		_resource = [_resources, _x] call econ_get_resource;
+	    _cost = [_costs, _x] call econ_get_resource;
 
-    if(_resource >= _cost) then {
-        _purchaseable = true;
-    };
+	    if(_resource >= _cost) then {
+	        _purchaseable = true;
+	    } else {
+			_purchaseable = false;
+		};
 
-    if(_purchaseable == false;) exitWith {
-        hint "You can not afford this.";
-    };
+	    if(!_purchaseable) exitWith {
+	        hint "You can not afford this.";
+	    };
+	};
 
-} forEach _resources call KK_fnc_assocArrayAllKeys;
+} forEach _all_keys;
 
 _purchaseable;

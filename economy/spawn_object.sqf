@@ -1,5 +1,6 @@
 params["_group", "_object_classname", "_spawn_location", "_crewed"];
 private _created_object = 0;
+
 if(_object_classname isKindOf "Man") then {
     _created_object = _group createUnit [_object_classname, _spawn_location];
 	_created_object setposATL _spawn_location;

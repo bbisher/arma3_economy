@@ -5,6 +5,6 @@ _amount = _this select 2;
 private _total = [_resources, _resource_type] call econ_get_resource;
 _total = _total + _amount;
 
-[_resource_type, _total] call BB_fnc_assocArrayKeySetValue;
+[_resources, _resource_type, _total] call KK_fnc_assocArrayAddKeyVal;
 
 _total;

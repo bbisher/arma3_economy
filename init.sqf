@@ -21,39 +21,39 @@ econ_get_resource = compileFinal preprocessFile "economy\core\get_resource.sqf";
 econ_spend_resource = compileFinal preprocessFile "economy\core\spend_resource.sqf";
 econ_is_affordable = compileFinal preprocessFile "economy\core\is_affordable.sqf";
 econ_purchase = compileFinal preprocessFile "economy\core\purchase.sqf";
-econ_spawn_object = compileFinal preprocessFile "economy\econ_spawn_object.sqf";
+econ_spawn_object = compileFinal preprocessFile "economy\spawn_object.sqf";
 
 
-_team1_resources = call util_assoc_array_create;
-player sideChat format ["Team Resources Initiated."];
-[_team1_resources, "funds", 10000] call KK_fnc_assocArrayAddKeyVal;
-[_team1_resources, "ammo", 500] call KK_fnc_assocArrayAddKeyVal;
-[_team1_resources, "fuel", 200] call KK_fnc_assocArrayAddKeyVal;
-[_team1_resources, "manpower", 50] call KK_fnc_assocArrayAddKeyVal;
+team1_resources = call KK_fnc_assocArrayCreate;
+[west,"HQ"] sideChat format ["Team Resources Initiated."];
+[team1_resources, "funds", 10000] call KK_fnc_assocArrayAddKeyVal;
+[team1_resources, "ammo", 500] call KK_fnc_assocArrayAddKeyVal;
+[team1_resources, "fuel", 200] call KK_fnc_assocArrayAddKeyVal;
+[team1_resources, "manpower", 50] call KK_fnc_assocArrayAddKeyVal;
 
-player sideChat format ["Funds: %1!", [_team1_resources, "funds"] call econ_get_resource] };
-player sideChat format ["Ammo: %1!", [_team1_resources, "ammo"] call econ_get_resource] };
-player sideChat format ["Fuel: %1!", [_team1_resources, "fuel"] call econ_get_resource] };
-player sideChat format ["Manpower: %1!", [_team1_resources, "manpower"] call econ_get_resource] };
+offroad_cost = call KK_fnc_assocArrayCreate;
+[offroad_cost, "funds", 1000] call KK_fnc_assocArrayAddKeyVal;
+[offroad_cost, "ammo", 200] call KK_fnc_assocArrayAddKeyVal;
+[offroad_cost, "fuel", 100] call KK_fnc_assocArrayAddKeyVal;
 
-_offroad_cost = call util_assoc_array_create;
-[_offroad_cost, "funds", 1000] call KK_fnc_assocArrayAddKeyVal;
-[_offroad_cost, "ammo", 200] call KK_fnc_assocArrayAddKeyVal;
-[_offroad_cost, "fuel", 100] call KK_fnc_assocArrayAddKeyVal;
-
-
-player addAction ["Earn Resource", { player sideChat format ["Ammo: %1!", [_team1_resources, "ammo", 100] call econ_earn_resource] }];
-player addAction ["Display Resource", { player sideChat format ["Ammo: %1!", [_team1_resources, "ammo"] call econ_get_resource] }];
+player addAction ["Earn Resource", {[west,"HQ"] sideChat format ["Ammo: %1!", [team1_resources, "ammo", 100] call econ_earn_resource]}];
+player addAction ["Display Resources", {
+    [west,"HQ"] sideChat format ["Funds: %1!", [team1_resources, "funds"] call econ_get_resource];
+    [west,"HQ"] sideChat format ["Ammo: %1!", [team1_resources, "ammo"] call econ_get_resource];
+    [west,"HQ"] sideChat format ["Fuel: %1!", [team1_resources, "fuel"] call econ_get_resource];
+    [west,"HQ"] sideChat format ["Manpower: %1!", [team1_resources, "manpower"] call econ_get_resource];
+}];
 //player addAction ["Spend Resource", { player sideChat format ["Funds: %1!", [george, "funds", 100] call econ_spend_resource] }];
 
-_temp_function = {
-    player sideChat format ["Purchased? %1!", [_team1_resources, _offroad_cost] call econ_purchase];
-    player sideChat format ["Funds: %1!", [_team1_resources, "funds"] call econ_get_resource] };
-    player sideChat format ["Ammo: %1!", [_team1_resources, "ammo"] call econ_get_resource] };
-    player sideChat format ["Fuel: %1!", [_team1_resources, "fuel"] call econ_get_resource] };
-    player sideChat format ["Manpower: %1!", [_team1_resources, "manpower"] call econ_get_resource] };
-    [group player, "C_Offroad_01_F", position player, true] call econ_spawn_object;
-};
 player addAction ["Purchase Offroad", {
-    [] call _temp_function;
+    _purchased = [team1_resources, offroad_cost] call econ_purchase;
+    [west,"HQ"] sideChat format ["Purchased? %1!", _purchased];
+    if(_purchased) then{
+        [west,"HQ"] sideChat format ["Funds: %1!", [team1_resources, "funds"] call econ_get_resource];
+        [west,"HQ"] sideChat format ["Ammo: %1!", [team1_resources, "ammo"] call econ_get_resource];
+        [west,"HQ"] sideChat format ["Fuel: %1!", [team1_resources, "fuel"] call econ_get_resource];
+        [west,"HQ"] sideChat format ["Manpower: %1!", [team1_resources, "manpower"] call econ_get_resource];
+        _spawned_object = [group player, "C_Offroad_01_F", position player, false] call econ_spawn_object;
+        [west,"HQ"] sideChat format ["Spawned: %1!", _spawned_object];
+    };
 }];
