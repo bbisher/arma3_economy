@@ -7,6 +7,6 @@ private _groups_markers=[];
 	_marker setMarkerShapeLocal "ICON";
 	_marker setMarkerTypeLocal "b_inf";
 	_marker setMarkerTextLocal roleDescription _leader;
-	_group_markers pushBack [_x, _marker];
+	_groups_markers pushBack [_x, _marker];
 } forEach _groups;
 _groups_markers;

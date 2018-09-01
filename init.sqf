@@ -7,12 +7,12 @@ KK_fnc_assocArrayDestroy = compileFinal preprocessFile "utilities\associative_ar
 KK_fnc_assocArrayGetVal = compileFinal preprocessFile "utilities\associative_arrays\KK_fnc_assocArrayGetVal.sqf";
 KK_fnc_assocArrayKeyExists = compileFinal preprocessFile "utilities\associative_arrays\KK_fnc_assocArrayKeyExists.sqf";
 
-/*
+
 markers_start_group_marker_tracker = compileFinal preprocessFile "utilities\markers\start_group_marker_tracker.sqf";
 markers_get_groups_markers = compileFinal preprocessFile "utilities\markers\get_groups_markers.sqf";
 markers_update_group_marker = compileFinal preprocessFile "utilities\markers\update_group_marker.sqf";
-group_marker_tracker = compileFinal preprocessFile "utilities\markers\start_group_marker_tracker.sqf";
-*/
+markers_get_player_side_groups = compileFinal preprocessFile "utilities\markers\get_player_side_groups.sqf";
+[player, 1] spawn markers_start_group_marker_tracker;
 /*Utilities*/
 
 econ_set_resource = compileFinal preprocessFile "economy\core\set_resource.sqf";
@@ -21,7 +21,7 @@ econ_is_affordable = compileFinal preprocessFile "economy\core\is_affordable.sqf
 econ_purchase = compileFinal preprocessFile "economy\core\purchase.sqf";
 econ_spawn_object = compileFinal preprocessFile "economy\spawn_object.sqf";
 
-
+//Set team1_resources to a object in game then everyone can access it.
 team1_resources = call KK_fnc_assocArrayCreate;
 [west,"HQ"] sideChat format ["Team Resources Initiated."];
 [team1_resources, "funds", 10000] call KK_fnc_assocArrayAddKeyVal;
